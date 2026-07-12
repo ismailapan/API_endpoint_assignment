@@ -1,4 +1,5 @@
 .vscode/
 apienv/
 __pycache__/
-*.pyc
+*.pyc/
+.env
