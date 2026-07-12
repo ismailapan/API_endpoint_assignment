@@ -5,16 +5,30 @@ services:
     image: postgres:latest
     container_name: flyrank_ass
     environment:
-      POSTGRES_USER: iapan
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: product_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:${DB_PORT}"
     
     volumes:
       - data_for_flyrank:/var/lib/postgresql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  web:
+    build: .
+    container_name: api
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db 
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    depends_on:
+      - db
 
 volumes:
   data_for_flyrank:
